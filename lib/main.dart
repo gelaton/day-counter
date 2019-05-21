@@ -45,66 +45,49 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   //int _counter = 0;
-  int _left = 365;
-  var now = new DateTime.now();
-  var start = new DateTime(2019,03,11);
-  var due;
+  var _left = 0;
+  var _right = 0;
+  var _now = new DateTime.now();
+  var _start = new DateTime(2019,03,11);
+  var _due = new DateTime(2020,03,12);
 
-/*   void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-      _left=365-_counter;
-    });
+  String _weekday(int _weekday){
+    if(_weekday==1) return "Monday";
+    if(_weekday==2) return "Tuesday";
+    if(_weekday==3) return "Wednesday";
+    if(_weekday==4) return "Thursday";
+    if(_weekday==5) return "Friday";
+    if(_weekday==6) return "Saturday";
+    if(_weekday==7) return "Sunday";
   }
- */
+  String _displayDate(DateTime _date){
+    return [[_date.year,_date.month,_date.day].join("."),_weekday(_date.weekday)].join(", ");
+  }
+
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    due = now.difference(start).inDays;
-    _left=365-due;
+    _right = _now.difference(_start).inDays;
+    _left = _due.difference(_now).inDays-1;
+    var _today=_displayDate(_now);
+    var _end=_displayDate(_due);
     return Scaffold(
-/*       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
- */      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+        body: Center(
         child: Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'D-$due',
-              style: Theme.of(context).textTheme.display4,
+            Tooltip(message: '$_today', child:
+              Text(
+                'D-$_right',
+                style: Theme.of(context).textTheme.display4,
+              ),
+              preferBelow: false,
+              verticalOffset: 70,
             ),
-            Text(
-              '$_left days left',
-              style: Theme.of(context).textTheme.body1,
+            Tooltip(message: '$_end', child:
+              Text(
+                '$_left days left',
+                style: Theme.of(context).textTheme.body1,
+              ),
             ),
           ],
         ),
